@@ -8,23 +8,8 @@
   import { tags } from "$lib/tags";
   import type { TagNode } from "$lib/tags";
   import { user } from "$lib/user"; // user is a store
-  import {
-    Form,
-    FormGroup,
-    Button,
-    ButtonSet,
-    Slider,
-    NumberInput,
-    SelectableTile,
-    TextInput,
-    ComboBox,
-    Grid,
-    Row,
-    Column,
-  } from "carbon-components-svelte";
-  import DateTimePicker from "./DateTimePicker.svelte";
-  import type { Activity } from "./dbTypes";
-  import TagToggle from "./TagToggle.svelte";
+
+  import { Container, FormItem, Button } from "contain-css-svelte";
 
   function formatDuration(duration: number | null): string {
     if (duration === null) {
@@ -53,6 +38,7 @@
   let newTags: string[] = [];
 
   export function onToggleTag(tag: TagNode) {
+    debugger;
     if (activity.tags.find((t) => t.id == tag.id)) {
       activity.tags = activity.tags.filter((t) => t.id != tag.id);
     } else {
@@ -80,40 +66,29 @@
 
 <h2>New Activity</h2>
 
-<Form>
-  <Grid>
-    <Row>
-      <Column>
-        <DateTimePicker labelText="Start Time:" bind:value={startTime} />
-      </Column>
-      <Column>
-        <TextInput
-          labelText="Description:"
-          bind:value={activity.description}
-          required
-          on:input={() => {
-            autofilled = false;
-          }}
-        />
-      </Column>
-    </Row>
-    <Row>
-      <Column>
-        <FormGroup>
-          <Slider
-            labelText="Duration: {formatDuration(activity.duration)}"
-            min={0}
-            max={60 * 8}
-            step={15}
-            bind:value={activity.duration}
-          />
-        </FormGroup>
-      </Column>
-      <Column><Button on:click={submitActivity}>+ Add</Button></Column>
-    </Row>
-  </Grid>
-  <FormGroup>
-    <!-- Tag Selector -->
-    <TagSelector {activity} {onToggleTag} />
-  </FormGroup>
-</Form>
+<Container>
+  <FormItem>
+    <span slot="label">Start Time</span>
+    <input bind:value={startTime} type="time" />
+  </FormItem>
+
+  <FormItem>
+    <span slot="label">Description</span>
+    <input bind:value={activity.description} />
+  </FormItem>
+
+  <FormItem>
+    <span slot="label">Duration</span>
+    <input
+      type="range"
+      min={0}
+      max={60 * 8}
+      step={15}
+      bind:value={activity.duration}
+    />
+  </FormItem>
+
+  <FormItem><Button on:click={submitActivity} primary>+ Add</Button></FormItem>
+
+  <TagSelector {activity} {onToggleTag} />
+</Container>

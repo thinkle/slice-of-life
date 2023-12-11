@@ -2,28 +2,27 @@
   import TagIcon from "./TagIcon.svelte";
 
   import { FormGroup, SelectableTile } from "carbon-components-svelte";
+  import { Tile } from "contain-css-svelte";
   import type { ActivityObject } from "./activities";
   import type { TagNode } from "./tags";
   export let activity: ActivityObject;
   export let tag: TagNode;
   export let onToggle: (tag: TagNode) => void;
   SelectableTile;
-  $: console.log("Tag has activity", activity);
+
+  let checked = activity.tags.find((t) => t.id == tag.id);
+  $: {
+    checked = !!activity.tags.find((t) => t.id == tag.id);
+    console.log("Updated checked for ", tag.name, "=>", checked);
+  }
 </script>
 
-<SelectableTile
-  selected={activity &&
-    activity.tags &&
-    !!activity.tags.find((t) => t.id == tag.id)}
-  on:select={() => {
-    onToggle(tag);
-  }}
->
+<Tile selectable {checked} on:input={() => onToggle(tag)}>
   {#if tag.name}
     <TagIcon tagname={tag.name} />
   {/if}
   <!-- </div> -->
-</SelectableTile>
+</Tile>
 
 <!-- 
 {#if tag.children}

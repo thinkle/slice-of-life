@@ -4,27 +4,26 @@
   import { tags } from "$lib/tags";
   import type { TagNode } from "$lib/tags";
   import { tagGroups, tagsByName } from "$lib/tags";
-  import { Grid, Row, Column } from "carbon-components-svelte";
+  import { GridLayout, Row, Container } from "contain-css-svelte";
+
   import TagToggle from "./TagToggle.svelte";
   export let activity: ActivityObject;
 
   export let onToggleTag: (tag: TagNode) => void;
 </script>
 
-<h2>Tags be Here</h2>
-<Grid condensed padding>
+<Container>
   {#each tagGroups as group}
-    {#if !group.dependsOn || activity.tags.find((t) => t.name == group.dependsOn)}
-      <label>
-        {group.label}
-      </label>
-      <Row padding={true}>
+    {#if !group.dependsOn || (activity.tags && activity.tags.find((t) => t.name == group.dependsOn))}
+      <Row size="small" --tile-width="80px">
+        <label>
+          {group.label}
+        </label>
+
         {#each group.options as tagName}
           {@const tag = $tagsByName.get(tagName)}
           {#if tag}
-            <Column sm={2} md={2} lg={2} padding>
-              <TagToggle {tag} {activity} onToggle={onToggleTag} />
-            </Column>
+            <TagToggle {tag} {activity} onToggle={onToggleTag} />
           {:else}
             Unknown nested tag? {tagName}
             {console.log("Could not find", tagName, "in map", $tagsByName)}
@@ -33,4 +32,11 @@
       </Row>
     {/if}
   {/each}
-</Grid>
+</Container>
+
+<style>
+  label {
+    width: calc(2 * var(--tile-width));
+    text-align: right;
+  }
+</style>

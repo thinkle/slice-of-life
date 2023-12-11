@@ -4,6 +4,7 @@
   import TV from "svelte-material-icons/TelevisionClassic.svelte";
   import Fam from "svelte-material-icons/HumanMaleFemaleChild.svelte";
   import Friends from "svelte-material-icons/HumanFemaleFemale.svelte";
+  import Connecting from "svelte-material-icons/Link.svelte";
   import Devices from "svelte-material-icons/Devices.svelte";
   import School from "svelte-material-icons/School.svelte";
   import Work from "svelte-material-icons/OfficeBuilding.svelte";
@@ -31,6 +32,7 @@
     "TV/Movie": TV,
     "Family Time": Fam,
     "Time w/ Friends": Friends,
+    Connecting: Connecting,
     School: School,
     Work: Work,
     Walking: Walk,
@@ -50,7 +52,9 @@
 
 {#if tagname in componentMap}
   <div class="wrap">
-    <svelte:component this={componentMap[tagname]} {size} />
+    <div class="icon">
+      <svelte:component this={componentMap[tagname]} {size} />
+    </div>
     <div class="text">{tagname}</div>
   </div>
 {:else}
@@ -58,10 +62,18 @@
 {/if}
 
 <style>
-  /* .wrap .text {
-    opacity: 0;
+  .wrap {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    place-content: center;
+    text-align: center;
+  }
+  .wrap .text {
+    opacity: 0.5;
+    font-size: x-small;
   }
   .wrap:hover .text {
     opacity: 1;
-  } */
+  }
 </style>
