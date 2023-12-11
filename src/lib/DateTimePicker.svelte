@@ -23,9 +23,4 @@
   $: console.log("Time is ", timeString + ampm);
 </script>
 
-<TimePicker bind:value={timeString} {labelText}>
-  <TimePickerSelect bind:value={ampm}>
-    <SelectItem value="am" text="AM" />
-    <SelectItem value="pm" text="PM" />
-  </TimePickerSelect>
-</TimePicker>
+<input type="time" bind:value={timeString} />
