@@ -10,6 +10,8 @@
   import { user } from "$lib/user"; // user is a store
 
   import { Container, FormItem, Button } from "contain-css-svelte";
+  import DateTimePicker from "./DateTimePicker.svelte";
+  import DurationPicker from "./DurationPicker.svelte";
 
   function formatDuration(duration: number | null): string {
     if (duration === null) {
@@ -38,7 +40,6 @@
   let newTags: string[] = [];
 
   export function onToggleTag(tag: TagNode) {
-    debugger;
     if (activity.tags.find((t) => t.id == tag.id)) {
       activity.tags = activity.tags.filter((t) => t.id != tag.id);
     } else {
@@ -66,11 +67,13 @@
 
 <h2>New Activity</h2>
 
-<Container>
+<Container --form-label-width="15em">
   <FormItem>
     <span slot="label">Start Time</span>
-    <input bind:value={startTime} type="time" />
+    <DateTimePicker bind:value={startTime} />
+    <!-- <input bind:value={startTime} type="time" /> -->
   </FormItem>
+  Start time is: {startTime}
 
   <FormItem>
     <span slot="label">Description</span>
@@ -79,13 +82,7 @@
 
   <FormItem>
     <span slot="label">Duration</span>
-    <input
-      type="range"
-      min={0}
-      max={60 * 8}
-      step={15}
-      bind:value={activity.duration}
-    />
+    <DurationPicker bind:value={activity.duration} />
   </FormItem>
 
   <FormItem><Button on:click={submitActivity} primary>+ Add</Button></FormItem>
